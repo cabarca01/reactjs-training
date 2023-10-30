@@ -10,7 +10,7 @@ function getDateString(date) {
   return date.getFullYear() + "-" + month + "-" + date.getDate();
 }
 
-function ExpenseForm() {
+function ExpenseForm(props) {
   const today = getDateString(new Date());
 
   const [dateEntered, setDateEntered] = React.useState("");
@@ -31,7 +31,7 @@ function ExpenseForm() {
   const submitHandler = (event) => {
     event.preventDefault(); // Don't send form and refresh
     const expenseData = {
-      date: dateEntered,
+      date: new Date(dateEntered),
       title: titleEntered,
       amount: amountEntered,
     };
@@ -40,7 +40,7 @@ function ExpenseForm() {
     setDateEntered('');
     setTitleEntered('');
 
-    console.log(expenseData);
+    props.onSaveExpenseData(expenseData);
   };
 
   return (
