@@ -8,7 +8,7 @@ import Card from "../UI/Card";
 import "./ExpenseList.css";
 
 function ExpenseList({ expenses }) {
-  const [yearFilter, setYearFilter] = React.useState("");
+  const [yearFilter, setYearFilter] = React.useState(2020);
 
   const applyYearFilterHandler = (selectedYear) => {
     setYearFilter(selectedYear);
@@ -18,7 +18,10 @@ function ExpenseList({ expenses }) {
   return (
     <div>
       <Card className="expenses">
-        <ExpensesFilter onApplyFilterByYear={applyYearFilterHandler} />
+        <ExpensesFilter
+          selectedYear={yearFilter}
+          onApplyFilterByYear={applyYearFilterHandler}
+        />
 
         {expenses.map((expense) => (
           <ExpenseItem
