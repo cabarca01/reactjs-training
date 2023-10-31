@@ -1,7 +1,7 @@
 import './CoreConceptsList.css'
 
 import CoreConcepts from './CoreConcepts'
-import { CORE_CONCEPTS } from '../../assets/data'
+import { CORE_CONCEPTS } from '../../misc/data'
 
 export default function CoreConceptsList() {
 

@@ -1,5 +1,5 @@
 import "./TabContent.css";
-import { EXAMPLES } from "../../assets/data";
+import { EXAMPLES } from "../../misc/data";
 
 export default function TabContent({ topic }) {
   return (
