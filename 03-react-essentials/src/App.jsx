@@ -1,6 +1,7 @@
 // dependencies
 import Header from "./components/UI/Header";
 import CoreConceptsList from "./components/CoreConcepts/CoreConceptsList";
+import ExamplesList from "./components/Examples/ExamplesList";
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
       <Header />
       <main>
         <CoreConceptsList />
-        <h2>Time to get started!</h2>
+        <ExamplesList />
       </main>
     </div>
   );
