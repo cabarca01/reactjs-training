@@ -20,15 +20,15 @@ export default function ExamplesList() {
   ];
 
   if (exampleContent) {
-    content = <TabContent topic={exampleContent} />;
+    content = <TabContent key={exampleContent} topic={exampleContent} />;
   }
-  
+
   return (
     <section id="examples">
       <h2>Examples</h2>
       <menu>
         {TAB_LIST.map((element) => (
-          <TabButton onClick={element.action}>{element.name}</TabButton>
+          <TabButton key={element.name} isSelected={element.name === exampleContent} onClick={element.action}>{element.name}</TabButton>
         ))}
       </menu>
       {content}
