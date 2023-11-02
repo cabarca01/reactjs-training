@@ -3,6 +3,7 @@ import "./ExamplesList.css";
 import { useState } from "react";
 import TabButton from "./TabButton";
 import TabContent from "./TabContent";
+import Section from "../UI/Section";
 
 export default function ExamplesList() {
   let content = <p>Please select a Concept</p>;
@@ -24,14 +25,19 @@ export default function ExamplesList() {
   }
 
   return (
-    <section id="examples">
-      <h2>Examples</h2>
+    <Section title="Examples" id="examples">
       <menu>
         {TAB_LIST.map((element) => (
-          <TabButton key={element.name} isSelected={element.name === exampleContent} onClick={element.action}>{element.name}</TabButton>
+          <TabButton
+            key={element.name}
+            isSelected={element.name === exampleContent}
+            onClick={element.action}
+          >
+            {element.name}
+          </TabButton>
         ))}
       </menu>
       {content}
-    </section>
+    </Section>
   );
 }
