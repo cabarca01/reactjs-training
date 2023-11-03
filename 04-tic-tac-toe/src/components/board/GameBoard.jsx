@@ -22,6 +22,9 @@ export default function GameBoard({ activePlayer, onSelectSquare }) {
 
   function clickHandler(rowIndex, columnIndex) {
     setBoardValues((prevBoard) => {
+      if (prevBoard[rowIndex][columnIndex] !== null) {
+        return prevBoard;
+      }
       const updatedBoardValues = [...prevBoard];
       updatedBoardValues[rowIndex][columnIndex] = activePlayer;
       return updatedBoardValues;
