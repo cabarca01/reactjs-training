@@ -1,4 +1,5 @@
 import PlayerSection from "./components/player/PlayerSection"
+import GameBoard from "./components/board/GameBoard"
 
 function App() {
 
@@ -6,7 +7,7 @@ function App() {
     <main>
       <div id="game-container">
         <PlayerSection />
-        GAME BOARD
+        <GameBoard />
       </div>
     </main>
   )
