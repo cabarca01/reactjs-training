@@ -3,18 +3,17 @@ import PlayerSection from "./components/player/PlayerSection";
 import GameBoard from "./components/board/GameBoard";
 import Log from "./components/Log";
 
+function getActivePlayer(turnsArray) {
+  return turnsArray.length > 0 && turnsArray[0].player === "X" ? "O" : "X";
+}
+
 function App() {
-  const [activePlayer, setActivePlayer] = useState("X");
   const [turns, setTurns] = useState([]);
+  const activePlayer = getActivePlayer(turns);
 
   function updateGameTurns(rowIndex, columnIndex) {
-    setActivePlayer((prevActivePlayer) =>
-      prevActivePlayer === "X" ? "O" : "X"
-    );
-
     setTurns((prevTurns) => {
-      const currentPlayer =
-        prevTurns.length > 0 && prevTurns[0].player === "X" ? "O" : "X";
+      const currentPlayer = getActivePlayer(prevTurns);
       return [
         {
           player: currentPlayer,
@@ -31,7 +30,7 @@ function App() {
         <PlayerSection activePlayer={activePlayer} />
         <GameBoard turns={turns} onSelectSquare={updateGameTurns} />
       </div>
-      <Log turns={turns}/>
+      <Log turns={turns} />
     </main>
   );
 }
