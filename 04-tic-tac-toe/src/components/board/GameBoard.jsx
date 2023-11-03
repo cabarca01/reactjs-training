@@ -15,17 +15,18 @@ function initializeBoardValues(boardSize) {
   return board;
 }
 
-export default function GameBoard() {
+export default function GameBoard({ activePlayer, onSelectSquare }) {
   const boardSize = 3;
   const initialBoardValues = initializeBoardValues(boardSize);
   const [boardValues, setBoardValues] = useState(initialBoardValues);
 
   function clickHandler(rowIndex, columnIndex) {
     setBoardValues((prevBoard) => {
-      const updatedBoardValues = [ ...prevBoard ]
-      updatedBoardValues[rowIndex][columnIndex] = "X";
+      const updatedBoardValues = [...prevBoard];
+      updatedBoardValues[rowIndex][columnIndex] = activePlayer;
       return updatedBoardValues;
     });
+    onSelectSquare();
   }
 
   function constructBoard(boardSize, values) {
@@ -37,7 +38,7 @@ export default function GameBoard() {
           <BoardButton
             key={"button_" + x + "-" + y}
             value={values[x][y]}
-            onClickFn={() => clickHandler(x,y)}
+            onClickFn={() => clickHandler(x, y)}
           />
         );
       }

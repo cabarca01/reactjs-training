@@ -2,7 +2,7 @@ import "./Player.css";
 
 import { useState } from "react";
 
-export default function Player({ name, symbol }) {
+export default function Player({ name, symbol, isActive }) {
   const [isEdit, setIsEdit] = useState(false);
   const [editedName, setEditedName] = useState(name);
 
@@ -21,7 +21,7 @@ export default function Player({ name, symbol }) {
   }
 
   return (
-    <li>
+    <li className={isActive ? "active" : "null"}>
       <span className="player">
         {playerName}
         <span className="player-symbol">{symbol}</span>
