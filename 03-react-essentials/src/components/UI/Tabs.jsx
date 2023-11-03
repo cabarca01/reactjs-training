@@ -1,7 +1,11 @@
-export default function Tabs({ children, menuElements }) {
+export default function Tabs({
+  children,
+  MenuContainer = "menu",
+  menuElements,
+}) {
   return (
     <>
-      <menu>{menuElements}</menu>
+      <MenuContainer>{menuElements}</MenuContainer>
       {children}
     </>
   );
