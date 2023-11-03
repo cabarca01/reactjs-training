@@ -1,6 +1,5 @@
 import "./GameBoard.css";
 
-import { useState } from "react";
 import BoardButton from "./BoardButton";
 
 function initializeBoardValues(boardSize) {
@@ -15,21 +14,14 @@ function initializeBoardValues(boardSize) {
   return board;
 }
 
-export default function GameBoard({ activePlayer, onSelectSquare }) {
+export default function GameBoard({ turns, onSelectSquare }) {
   const boardSize = 3;
-  const initialBoardValues = initializeBoardValues(boardSize);
-  const [boardValues, setBoardValues] = useState(initialBoardValues);
+  const boardValues = initializeBoardValues(boardSize);
 
-  function clickHandler(rowIndex, columnIndex) {
-    setBoardValues((prevBoard) => {
-      if (prevBoard[rowIndex][columnIndex] !== null) {
-        return prevBoard;
-      }
-      const updatedBoardValues = [...prevBoard];
-      updatedBoardValues[rowIndex][columnIndex] = activePlayer;
-      return updatedBoardValues;
-    });
-    onSelectSquare();
+  for (const turn of turns) {
+    const { square, player } = turn;
+    const { row, column } = square;
+    boardValues[row][column] = player;
   }
 
   function constructBoard(boardSize, values) {
@@ -41,7 +33,7 @@ export default function GameBoard({ activePlayer, onSelectSquare }) {
           <BoardButton
             key={"button_" + x + "-" + y}
             value={values[x][y]}
-            onClickFn={() => clickHandler(x, y)}
+            onClickFn={() => onSelectSquare(x, y)}
           />
         );
       }
