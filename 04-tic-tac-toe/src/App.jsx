@@ -1,9 +1,14 @@
+import PlayerSection from "./components/player/PlayerSection"
 
 function App() {
-  
 
   return (
-    <h1>React Tic-Tac-Toe</h1>
+    <main>
+      <div id="game-container">
+        <PlayerSection />
+        GAME BOARD
+      </div>
+    </main>
   )
 }
 
