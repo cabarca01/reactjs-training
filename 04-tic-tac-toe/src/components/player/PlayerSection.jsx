@@ -10,8 +10,8 @@ export default function PlayerSection() {
 
   return (
     <ol id="players">
-      <Player name={player1Name} symbol={"X"} />
-      <Player name={player2Name} symbol={"O"} />
+      <Player key="player_1" name={player1Name} symbol={"X"} />
+      <Player key="player_2" name={player2Name} symbol={"O"} />
     </ol>
   );
 }
