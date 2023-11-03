@@ -33,6 +33,7 @@ export default function GameBoard({ turns, onSelectSquare }) {
           <BoardButton
             key={"button_" + x + "-" + y}
             value={values[x][y]}
+            isDisabled={values[x][y] !== null}
             onClickFn={() => onSelectSquare(x, y)}
           />
         );
