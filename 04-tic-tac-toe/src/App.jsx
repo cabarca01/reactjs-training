@@ -42,12 +42,26 @@ function checkWinner(board) {
 function App() {
   const boardValues = initializeBoardValues(3);
   const [turns, setTurns] = useState([]);
+  const [players, setPlayers] = useState({
+    'X': 'Player 1',
+    'Y': 'Player 2'
+  });
+
   const activePlayer = getActivePlayer(turns);
 
   for (const turn of turns) {
     const { square, player } = turn;
     const { row, column } = square;
     boardValues[row][column] = player;
+  }
+
+  function savePlayerHandler(playerSymbol, playerName){
+    setPlayers((prevPlayers) => {
+      return {
+        ...prevPlayers,
+        [playerSymbol]: playerName
+      }
+    })
   }
 
   function updateGameTurnsHandler(rowIndex, columnIndex) {
@@ -73,9 +87,9 @@ function App() {
   return (
     <main>
       <div id="game-container">
-        <PlayerSection activePlayer={activePlayer} />
+        <PlayerSection activePlayer={activePlayer} onSavePlayer={savePlayerHandler}/>
         {winner || isDraw ? (
-          <GameOver winner={winner} onRestart={gameRestartHandler} />
+          <GameOver winner={players[winner]} onRestart={gameRestartHandler} />
         ) : null}
         <GameBoard
           boardValues={boardValues}

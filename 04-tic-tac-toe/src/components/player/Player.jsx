@@ -2,7 +2,7 @@ import "./Player.css";
 
 import { useState } from "react";
 
-export default function Player({ name, symbol, isActive }) {
+export default function Player({ name, symbol, isActive, onSavePlayer }) {
   const [isEdit, setIsEdit] = useState(false);
   const [editedName, setEditedName] = useState(name);
 
@@ -14,6 +14,7 @@ export default function Player({ name, symbol, isActive }) {
 
   function clickHandler() {
     setIsEdit(previousState => !previousState);
+    isEdit && onSavePlayer(symbol, editedName);
   }
 
   function nameChangeHandler(event) {
