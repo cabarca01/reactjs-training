@@ -24,7 +24,7 @@ const inputItems = [
     min: 0,
     step: 0.1,
   },
-  { id: "duration", label: "DURATION", max: 48, min: 0, step: 1 },
+  { id: "duration", label: "DURATION", max: 48, min: 1, step: 1 },
 ];
 
 export default function UserInputSection({ parameters, onChangeParams }) {
