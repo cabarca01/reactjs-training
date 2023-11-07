@@ -7,7 +7,7 @@ export default function UserInputItem({ itemLabel, paramId, onChange,  ...inputT
   return (
     <p>
       <label>{itemLabel}</label>
-      <input type="number" {...inputTypeProps} onChange={changeParameterHandler} />
+      <input type="number" required {...inputTypeProps} onChange={changeParameterHandler} />
     </p>
   );
 }
