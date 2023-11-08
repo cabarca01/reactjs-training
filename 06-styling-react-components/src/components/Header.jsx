@@ -1,6 +1,9 @@
 import logo from "../assets/logo.png";
 import { styled } from "styled-components";
 
+
+// Styled Components 
+
 const StyledHeader = styled.header`
   display: flex;
   flex-direction: column;
