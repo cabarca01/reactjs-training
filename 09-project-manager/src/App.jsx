@@ -1,8 +1,21 @@
+import { useState } from "react";
+
+import Sidebar from "./components/Sidebar";
+import NewProject from "./components/projects/NewProject";
+
 function App() {
+  const [projectList, setProjectList] = useState([]);
+
+  function saveProjectHandler(project) {
+    setProjectList((prevList) => ([project, ...prevList]));
+  }
+
+  function selectProjectHandler(projectId) {}
   return (
-    <>
-      <h1 className="my-8 text-center text-5xl font-bold">Hello World</h1>
-    </>
+    <main className="h-screen my-8 flex gap-8">
+      <Sidebar projects={projectList} onProjectSelect={selectProjectHandler} />
+      <NewProject onSave={saveProjectHandler}/>
+    </main>
   );
 }
 
