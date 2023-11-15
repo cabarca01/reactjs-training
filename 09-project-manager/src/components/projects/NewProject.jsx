@@ -3,7 +3,7 @@ import { v4 as uuidV4 } from "uuid";
 
 import Input from "../UI/Input";
 
-export default function NewProject({ onSave }) {
+export default function NewProject({ onSave, onCancel }) {
   const titleRef = useRef();
   const descriptionRef = useRef();
   const dateRef = useRef();
@@ -35,7 +35,7 @@ export default function NewProject({ onSave }) {
             <button
               className="text-stone-800 hover:text-stone-950"
               type="button"
-              onClick={clearForm}
+              onClick={onCancel}
             >
               Cancel
             </button>
