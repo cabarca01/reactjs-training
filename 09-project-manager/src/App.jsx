@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { findProject } from "./utils/utils";
 
 import Sidebar from "./components/Sidebar";
 import NewProject from "./components/projects/NewProject";
 import NoProjectSelected from "./components/projects/NoProjectSelected";
+import ProjectDetails from "./components/projects/ProjectDetail";
 
 function App() {
   const [projectList, setProjectList] = useState([]);
   const [content, setContent] = useState("no-project");
+  const [project, setProject] = useState({});
 
   function saveProjectHandler(project) {
     setProjectList((prevList) => [project, ...prevList]);
@@ -16,12 +19,17 @@ function App() {
     setContent(contentId);
   }
 
-  function selectProjectHandler(projectId) {}
+  function selectProjectHandler(projectId) {
+    setProject(findProject(projectList, projectId));
+    setContent("view-project");
+  }
+
   return (
     <main className="h-screen my-8 flex gap-8">
       <Sidebar
         projects={projectList}
         onProjectSelect={selectProjectHandler}
+        selectedProjectId={project.id ? project.id : null}
         onCreate={() => {
           setContentHandler("new-project");
         }}
@@ -41,6 +49,7 @@ function App() {
           }}
         />
       )}
+      {content === "view-project" && <ProjectDetails project={project} />}
     </main>
   );
 }
