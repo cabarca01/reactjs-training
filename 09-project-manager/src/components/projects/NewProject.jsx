@@ -22,6 +22,7 @@ export default function NewProject({ onSave, onCancel }) {
       title: titleRef.current.value(),
       description: descriptionRef.current.value(),
       dueDate: new Date(dateRef.current.value()),
+      tasks: [],
     };
     clearForm();
     onSave(newProject);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { findProject } from "./utils/utils";
+import { filter, concat } from "lodash";
 
 import Sidebar from "./components/Sidebar";
 import NewProject from "./components/projects/NewProject";
@@ -13,6 +14,19 @@ function App() {
 
   function saveProjectHandler(project) {
     setProjectList((prevList) => [project, ...prevList]);
+  }
+
+  function saveTaskHandler(task) {
+    setProjectList((prevList) => {
+      const projectId = project.id;
+      const newProjectList = filter(prevList, (proj) => proj.id !== projectId);
+      const newProject = {
+        ...project,
+        tasks: [...project.tasks, task],
+      };
+      setProject(newProject);
+      return concat(newProjectList, newProject);
+    });
   }
 
   function setContentHandler(contentId) {
@@ -49,7 +63,9 @@ function App() {
           }}
         />
       )}
-      {content === "view-project" && <ProjectDetails project={project} />}
+      {content === "view-project" && (
+        <ProjectDetails project={project} onSaveTask={saveTaskHandler} />
+      )}
     </main>
   );
 }
