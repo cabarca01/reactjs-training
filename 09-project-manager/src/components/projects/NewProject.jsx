@@ -9,9 +9,9 @@ export default function NewProject({ onSave, onCancel }) {
   const dateRef = useRef();
 
   function clearForm() {
-    titleRef.current.clear();
-    descriptionRef.current.clear();
-    dateRef.current.clear();
+    titleRef.current.value = "";
+    descriptionRef.current.value = "";
+    dateRef.current.value = "";
   }
 
   function saveProjectHandler(event) {
@@ -19,9 +19,9 @@ export default function NewProject({ onSave, onCancel }) {
 
     const newProject = {
       id: uuidV4(),
-      title: titleRef.current.value(),
-      description: descriptionRef.current.value(),
-      dueDate: new Date(dateRef.current.value()),
+      title: titleRef.current.value,
+      description: descriptionRef.current.value,
+      dueDate: new Date(dateRef.current.value),
       tasks: [],
     };
     clearForm();

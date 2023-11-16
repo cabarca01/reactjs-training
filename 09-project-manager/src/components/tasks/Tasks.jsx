@@ -12,9 +12,9 @@ export default function Tasks({ taskList, onTaskSave, onTaskDelete }) {
   function saveTaskHandler() {
     const task = {
       id: uuidV4(),
-      title: taskRef.current.getValue(),
+      title: taskRef.current.value,
     };
-    taskRef.current.setValue("");
+    taskRef.current.value = "";
     onTaskSave(task);
   }
 
