@@ -1,7 +1,12 @@
 import { getDateString } from "../../utils/utils";
 import Tasks from "../tasks/Tasks";
 
-export default function ProjectDetails({ project, onSaveTask }) {
+export default function ProjectDetails({
+  project,
+  onSaveTask,
+  onDeleteProject,
+  onDeleteTask,
+}) {
   return (
     <div className="w-[35rem] mt-16">
       <header className="pb-4 mb-4 border-b-2 border-stone-300">
@@ -9,7 +14,12 @@ export default function ProjectDetails({ project, onSaveTask }) {
           <h1 className="text-3xl font-bold text-stone-600 mb-2">
             {project.title}
           </h1>
-          <button className="text-stone-600 hover:text-stone-950">
+          <button
+            className="text-stone-600 hover:text-stone-950"
+            onClick={() => {
+              onDeleteProject(project.id);
+            }}
+          >
             Delete
           </button>
         </div>
@@ -19,7 +29,11 @@ export default function ProjectDetails({ project, onSaveTask }) {
         </p>
       </header>
 
-      <Tasks taskList={project.tasks} onTaskSave={onSaveTask} />
+      <Tasks
+        taskList={project.tasks}
+        onTaskSave={onSaveTask}
+        onTaskDelete={onDeleteTask}
+      />
     </div>
   );
 }

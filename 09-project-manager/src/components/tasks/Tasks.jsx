@@ -2,15 +2,15 @@ import { useRef } from "react";
 import { v4 as uuidV4 } from "uuid";
 import NewTask from "./NewTask";
 
-export default function Tasks({ taskList, onTaskSave }) {
+export default function Tasks({ taskList, onTaskSave, onTaskDelete }) {
   const taskRef = useRef();
 
   function saveTaskHandler() {
     const task = {
       id: uuidV4(),
-      title: taskRef.current.value,
+      title: taskRef.current.getValue(),
     };
-    taskRef.current.value = "";
+    taskRef.current.setValue("");
     onTaskSave(task);
   }
 
@@ -18,7 +18,7 @@ export default function Tasks({ taskList, onTaskSave }) {
     <section className="text-stone-800 my-4">
       <div>
         <h2 className="text-2xl font-bold text-stone-700 mb-4">Tasks</h2>
-        <NewTask onSave={saveTaskHandler} />
+        <NewTask ref={taskRef} onSave={saveTaskHandler} />
 
         {taskList.length === 0 && (
           <p className="text-stone-800 my-4">
@@ -29,7 +29,12 @@ export default function Tasks({ taskList, onTaskSave }) {
           {taskList.map((task) => (
             <li key={task.id} className="flex justify-between my-4">
               {task.title}
-              <button className="text-stone-700 hover:text-red-500">
+              <button
+                className="text-stone-700 hover:text-red-500"
+                onClick={() => {
+                  onTaskDelete(task.id);
+                }}
+              >
                 Clear
               </button>
             </li>

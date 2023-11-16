@@ -1,4 +1,19 @@
-export default function NewTask({ onSave }) {
+import { forwardRef, useRef, useImperativeHandle } from "react";
+
+const NewTask = forwardRef(function NewTask({ onSave }, ref) {
+  const taskRef = useRef();
+
+  useImperativeHandle(ref, () => {
+    return {
+      getValue() {
+        return taskRef.current.value;
+      },
+      setValue(value) {
+        taskRef.current.value = value;
+      },
+    };
+  });
+
   return (
     <div className="flex items-center gap-4">
       <input
@@ -12,4 +27,6 @@ export default function NewTask({ onSave }) {
       </button>
     </div>
   );
-}
+});
+
+export default NewTask;

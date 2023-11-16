@@ -14,6 +14,7 @@ function App() {
 
   function saveProjectHandler(project) {
     setProjectList((prevList) => [project, ...prevList]);
+    setContentHandler("no-project");
   }
 
   function saveTaskHandler(task) {
@@ -29,13 +30,34 @@ function App() {
     });
   }
 
+  function deleteProjectHandler(projectId) {
+    setProjectList((prevList) =>
+      filter(prevList, (proj) => proj.id !== projectId)
+    );
+    setContentHandler("no-project");
+    setProject({});
+  }
+
+  function deleteTaskHandler(taskId) {
+    setProjectList((prevList) => {
+      const projectId = project.id;
+      const newProjectList = filter(prevList, (proj) => proj.id !== projectId);
+      const newProject = {
+        ...project,
+        tasks: filter(project.tasks, (task) => task.id !== taskId),
+      };
+      setProject(newProject);
+      return concat(newProjectList, newProject);
+    });
+  }
+
   function setContentHandler(contentId) {
     setContent(contentId);
   }
 
   function selectProjectHandler(projectId) {
     setProject(findProject(projectList, projectId));
-    setContent("view-project");
+    setContentHandler("view-project");
   }
 
   return (
@@ -64,7 +86,12 @@ function App() {
         />
       )}
       {content === "view-project" && (
-        <ProjectDetails project={project} onSaveTask={saveTaskHandler} />
+        <ProjectDetails
+          project={project}
+          onSaveTask={saveTaskHandler}
+          onDeleteProject={deleteProjectHandler}
+          onDeleteTask={deleteTaskHandler}
+        />
       )}
     </main>
   );
