@@ -20,8 +20,8 @@ const NewTask = forwardRef(function NewTask({ onSave }, ref) {
   }
 
   return (
-    <div className="flex items-center gap-4">
-      <form onSubmit={saveProjectHandler}>
+    <form onSubmit={saveProjectHandler}>
+      <div className="flex items-center gap-4">
         <input
           ref={taskRef}
           type="text"
@@ -31,8 +31,8 @@ const NewTask = forwardRef(function NewTask({ onSave }, ref) {
         <button className="text-stone-700 hover:text-stone-950" type="submit">
           Add Task
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 });
 
