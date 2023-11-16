@@ -14,7 +14,8 @@ function App() {
 
   function saveProjectHandler(project) {
     setProjectList((prevList) => [project, ...prevList]);
-    setContentHandler("no-project");
+    setProject(project);
+    setContentHandler("view-project");
   }
 
   function saveTaskHandler(task) {
