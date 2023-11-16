@@ -8,87 +8,109 @@ import NoProjectSelected from "./components/projects/NoProjectSelected";
 import ProjectDetails from "./components/projects/ProjectDetail";
 
 function App() {
-  const [projectList, setProjectList] = useState([]);
-  const [content, setContent] = useState("no-project");
-  const [project, setProject] = useState({});
+  const [projectState, setProjectState] = useState({
+    projects: [],
+    selectedProject: undefined,
+  });
+
+  const isProjectSelected =
+    projectState.selectedProject && projectState.selectedProject !== null;
 
   function saveProjectHandler(project) {
-    setProjectList((prevList) => [project, ...prevList]);
-    setProject(project);
-    setContentHandler("view-project");
+    setProjectState((prevState) => ({
+      projects: [...prevState.projects, project],
+      selectedProject: project,
+    }));
   }
 
   function saveTaskHandler(task) {
-    setProjectList((prevList) => {
-      const projectId = project.id;
-      const newProjectList = filter(prevList, (proj) => proj.id !== projectId);
-      const newProject = {
-        ...project,
-        tasks: [...project.tasks, task],
+    setProjectState((prevState) => {
+      const newProjectList = filter(
+        prevState.projects,
+        (project) => project.id !== prevState.selectedProject.id
+      );
+      const updatedProject = {
+        ...prevState.selectedProject,
+        tasks: [...prevState.selectedProject.tasks, task],
       };
-      setProject(newProject);
-      return concat(newProjectList, newProject);
+      return {
+        projects: concat(newProjectList, updatedProject),
+        selectedProject: updatedProject,
+      };
     });
   }
 
   function deleteProjectHandler(projectId) {
-    setProjectList((prevList) =>
-      filter(prevList, (proj) => proj.id !== projectId)
-    );
-    setContentHandler("no-project");
-    setProject({});
+    setProjectState((prevState) => ({
+      projects: filter(
+        prevState.projects,
+        (project) => project.id !== projectId
+      ),
+      selectedProject: undefined,
+    }));
   }
 
   function deleteTaskHandler(taskId) {
-    setProjectList((prevList) => {
-      const projectId = project.id;
-      const newProjectList = filter(prevList, (proj) => proj.id !== projectId);
-      const newProject = {
-        ...project,
-        tasks: filter(project.tasks, (task) => task.id !== taskId),
+    setProjectState((prevState) => {
+      const newProjectList = filter(
+        prevState.projects,
+        (project) => project.id !== prevState.selectedProject.id
+      );
+      const updatedProject = {
+        ...prevState.selectedProject,
+        tasks: filter(
+          prevState.selectedProject.tasks,
+          (task) => task.id !== taskId
+        ),
       };
-      setProject(newProject);
-      return concat(newProjectList, newProject);
+      return {
+        projects: concat(newProjectList, updatedProject),
+        selectedProject: updatedProject,
+      };
     });
   }
 
-  function setContentHandler(contentId) {
-    setContent(contentId);
-  }
-
   function selectProjectHandler(projectId) {
-    setProject(findProject(projectList, projectId));
-    setContentHandler("view-project");
+    const project =
+      !projectId || projectId === null
+        ? projectId
+        : findProject(projectState.projects, projectId);
+    setProjectState((prevState) => ({
+      ...prevState,
+      selectedProject: project,
+    }));
   }
 
   return (
     <main className="h-screen my-8 flex gap-8">
       <Sidebar
-        projects={projectList}
+        projects={projectState.projects}
         onProjectSelect={selectProjectHandler}
-        selectedProjectId={project.id ? project.id : null}
+        selectedProjectId={
+          isProjectSelected ? projectState.selectedProject.id : null
+        }
         onCreate={() => {
-          setContentHandler("new-project");
+          selectProjectHandler(null);
         }}
       />
-      {content === "new-project" && (
+      {projectState.selectedProject === null && (
         <NewProject
           onSave={saveProjectHandler}
           onCancel={() => {
-            setContentHandler("no-project");
+            selectProjectHandler(undefined);
           }}
         />
       )}
-      {content === "no-project" && (
+      {projectState.selectedProject === undefined && (
         <NoProjectSelected
           onCreate={() => {
-            setContentHandler("new-project");
+            selectProjectHandler(null);
           }}
         />
       )}
-      {content === "view-project" && (
+      {isProjectSelected && (
         <ProjectDetails
-          project={project}
+          project={projectState.selectedProject}
           onSaveTask={saveTaskHandler}
           onDeleteProject={deleteProjectHandler}
           onDeleteTask={deleteTaskHandler}
