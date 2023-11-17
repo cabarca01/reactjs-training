@@ -2,8 +2,8 @@ import { useContext } from "react";
 
 import { CartContext } from "../contexts/shopping-cart";
 
-export default function Cart({ onUpdateItemQuantity }) {
-  const { items } = useContext(CartContext);
+export default function Cart() {
+  const { items, onUpdateItemQuantity } = useContext(CartContext);
 
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
