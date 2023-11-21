@@ -7,10 +7,39 @@ import Modal from "./components/Modal.jsx";
 import DeleteConfirmation from "./components/DeleteConfirmation.jsx";
 import logoImg from "./assets/logo.png";
 
+function storeSelectedPlace(placeId) {
+  const selectedPlaceIds =
+    JSON.parse(localStorage.getItem("storedPlaceIds")) || [];
+
+  if (selectedPlaceIds.indexOf(placeId) === -1) {
+    const placeList = [placeId, ...selectedPlaceIds];
+    localStorage.setItem("storedPlaceIds", JSON.stringify(placeList));
+  }
+}
+
+function removeSelectedPlace(placeId) {
+  const selectedPlaceIds =
+    JSON.parse(localStorage.getItem("storedPlaceIds")) || [];
+
+  const placeList = selectedPlaceIds.filter((id) => id !== placeId);
+  localStorage.setItem("storedPlaceIds", JSON.stringify(placeList));
+}
+
+function getSelectedPlaceList() {
+  const selectedPlaceIds =
+    JSON.parse(localStorage.getItem("storedPlaceIds")) || [];
+
+  return selectedPlaceIds.map((placeId) =>
+    AVAILABLE_PLACES.find((place) => place.id === placeId)
+  );
+}
+
 function App() {
   const modal = useRef();
   const selectedPlace = useRef();
-  const [pickedPlaces, setPickedPlaces] = useState([]);
+  const selectedPlaceList = getSelectedPlaceList();
+
+  const [pickedPlaces, setPickedPlaces] = useState(selectedPlaceList);
   const [sortedPlaces, setSortedPlaces] = useState([]);
 
   useEffect(() => {
@@ -39,12 +68,14 @@ function App() {
       const place = AVAILABLE_PLACES.find((place) => place.id === id);
       return [place, ...prevPickedPlaces];
     });
+    storeSelectedPlace(id);
   }
 
   function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
+    removeSelectedPlace(selectedPlace.current);
     modal.current.close();
   }
 
