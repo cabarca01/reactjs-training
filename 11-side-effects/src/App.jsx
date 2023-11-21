@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { sortPlacesByDistance } from "./loc.js";
 
 import Places from "./components/Places.jsx";
@@ -71,13 +71,13 @@ function App() {
     storeSelectedPlace(id);
   }
 
-  function handleRemovePlace() {
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
     removeSelectedPlace(selectedPlace.current);
     setIsModalOpen(false);
-  }
+  }, []);
 
   return (
     <>
