@@ -1,15 +1,26 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from "react";
+import { sortPlacesByDistance } from "./loc.js";
 
-import Places from './components/Places.jsx';
-import { AVAILABLE_PLACES } from './data.js';
-import Modal from './components/Modal.jsx';
-import DeleteConfirmation from './components/DeleteConfirmation.jsx';
-import logoImg from './assets/logo.png';
+import Places from "./components/Places.jsx";
+import { AVAILABLE_PLACES } from "./data.js";
+import Modal from "./components/Modal.jsx";
+import DeleteConfirmation from "./components/DeleteConfirmation.jsx";
+import logoImg from "./assets/logo.png";
 
 function App() {
   const modal = useRef();
   const selectedPlace = useRef();
   const [pickedPlaces, setPickedPlaces] = useState([]);
+  const [sortedPlaces, setSortedPlaces] = useState([]);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { longitude, latitude } = position.coords;
+      setSortedPlaces(
+        sortPlacesByDistance(AVAILABLE_PLACES, latitude, longitude)
+      );
+    });
+  }, []);
 
   function handleStartRemovePlace(id) {
     modal.current.open();
@@ -57,13 +68,14 @@ function App() {
       <main>
         <Places
           title="I'd like to visit ..."
-          fallbackText={'Select the places you would like to visit below.'}
+          fallbackText={"Select the places you would like to visit below."}
           places={pickedPlaces}
           onSelectPlace={handleStartRemovePlace}
         />
         <Places
           title="Available Places"
-          places={AVAILABLE_PLACES}
+          places={sortedPlaces}
+          fallbackText="Sorting places according to your location..."
           onSelectPlace={handleSelectPlace}
         />
       </main>
