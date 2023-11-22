@@ -7,9 +7,11 @@ export default function Question() {
   const { currentQuestion } = useContext(QuizContext);
 
   return (
-    <div>
-      <p>{currentQuestion.text}</p>
-      <AnswerList/>
+    <div id="quiz">
+      <div id="question">
+        <p>{currentQuestion.text}</p>
+        <AnswerList />
+      </div>
     </div>
   );
 }

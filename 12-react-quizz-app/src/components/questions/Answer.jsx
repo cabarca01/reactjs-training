@@ -5,7 +5,7 @@ import { QuizContext } from "../../contexts/quiz-context";
 export default function Answer({ id, answer }) {
   const { onRegisterAnswer } = useContext(QuizContext);
   return (
-    <li>
+    <li className="answer">
       <button
         onClick={() => {
           onRegisterAnswer(id);

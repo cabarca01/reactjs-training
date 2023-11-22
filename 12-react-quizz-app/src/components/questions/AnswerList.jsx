@@ -7,7 +7,7 @@ export default function AnswerList() {
   const { currentQuestion } = useContext(QuizContext);
   return (
     <menu>
-      <ul>
+      <ul id="answers">
         {currentQuestion.answers.map((answer, index) => (
           <Answer
             key={currentQuestion.id + "_" + index}

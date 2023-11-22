@@ -7,7 +7,9 @@ function App() {
     <>
       <Header />
       <QuizContextProvider>
-        <Question />
+        <main>
+          <Question />
+        </main>
       </QuizContextProvider>
     </>
   );
