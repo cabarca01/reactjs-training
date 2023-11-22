@@ -14,7 +14,6 @@ export default function AnswerList() {
         {answers.map((answer, index) => (
           <Answer
             key={currentQuestion.id + "_" + index}
-            id={index}
             answer={answer}
           />
         ))}
