@@ -11,7 +11,7 @@ export const QuizContext = createContext({
   onRegisterAnswer: () => {},
 });
 
-function quizReducer(quizState, action ) {
+function quizReducer(quizState, action) {
   const updatedState = { ...quizState };
 
   if (action.identifier === "REGISTER_ANSWER") {
