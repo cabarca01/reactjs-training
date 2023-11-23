@@ -1,4 +1,5 @@
-import { useContext, useCallback } from "react";
+import { useContext, useCallback, useRef } from "react";
+import { shuffleList } from "../../utils/utils";
 
 import { QuizContext } from "../../contexts/quiz-context.jsx";
 import AnswerList from "./AnswerList";
@@ -6,14 +7,35 @@ import AnswerTimer from "./AnswerTimer";
 import Summary from "../UI/Summary.jsx";
 
 export default function Question() {
-  const { currentQuestion, availableQuestions, onRegisterAnswer } =
-    useContext(QuizContext);
+  const context = useContext(QuizContext);
+
   const questionTime = 10000;
-  const isQuizCompleted = availableQuestions.length === 0;
+  const isQuizCompleted = context.availableQuestions.length === 0;
+  const shuffledAnswerList = useRef();
+
+  if (context.answerState === null && !isQuizCompleted) {
+    shuffledAnswerList.current = shuffleList(context.currentQuestion.answers);
+  }
 
   const answerTimeoutHandler = useCallback(() => {
-    onRegisterAnswer(null);
-  }, [onRegisterAnswer]);
+    context.onRegisterAnswer(null);
+  }, [context.onRegisterAnswer]);
+
+  const selectAnswerHandler = useCallback(
+    (answer) => {
+      context.onRegisterAnswer(answer);
+      const selectedTimer = setTimeout(() => {
+        context.onUpdateAnswerState();
+        setTimeout(() => {
+          context.onUpdateAnswerState();
+        }, 1000);
+      }, 2000);
+      return () => {
+        clearTimeout(selectedTimer);
+      };
+    },
+    [context.onUpdateAnswerState, context.onRegisterAnswer]
+  );
 
   if (isQuizCompleted) {
     return <Summary />;
@@ -21,14 +43,19 @@ export default function Question() {
 
   return (
     <div id="quiz">
-      <AnswerTimer
-        key={currentQuestion.id}
-        timeout={questionTime}
-        onTimeout={answerTimeoutHandler}
-      />
+      {context.answerState === null && (
+        <AnswerTimer
+          key={context.currentQuestion.id}
+          timeout={questionTime}
+          onTimeout={answerTimeoutHandler}
+        />
+      )}
       <div id="question">
-        <p>{currentQuestion.text}</p>
-        <AnswerList />
+        <p>{context.currentQuestion.text}</p>
+        <AnswerList
+          shuffledAnswers={shuffledAnswerList.current}
+          onSelectAnswer={selectAnswerHandler}
+        />
       </div>
     </div>
   );

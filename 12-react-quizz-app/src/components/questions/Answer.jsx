@@ -2,13 +2,17 @@ import { useContext } from "react";
 
 import { QuizContext } from "../../contexts/quiz-context";
 
-export default function Answer({ answer }) {
-  const { onRegisterAnswer } = useContext(QuizContext);
+export default function Answer({ answer, onSelectAnswer }) {
+  const { answerState, answers } = useContext(QuizContext);
+  const buttonClasses =
+    answers.length > 0 && answers[0].answer === answer ? answerState : null;
   return (
     <li className="answer">
       <button
+        className={buttonClasses}
+        disabled={answerState !== null}
         onClick={() => {
-          onRegisterAnswer(answer);
+          onSelectAnswer(answer);
         }}
       >
         {answer}
