@@ -1,8 +1,6 @@
 import { createContext, useReducer } from "react";
-import { getQuestion } from "../utils/utils.js";
+import { getQuestion, getAllQuestions } from "../utils/utils.js";
 import { filter } from "lodash";
-
-import questions from "../questions.js";
 
 export const QuizContext = createContext({
   currentQuestion: {},
@@ -55,9 +53,9 @@ function quizReducer(quizState, action) {
 
 export default function QuizContextProvider({ children }) {
   const [currentQuizState, quizDispatch] = useReducer(quizReducer, {
-    currentQuestion: getQuestion(questions),
+    currentQuestion: getQuestion(getAllQuestions()),
     answerState: null,
-    availableQuestions: questions,
+    availableQuestions: getAllQuestions(),
     answers: [],
   });
 

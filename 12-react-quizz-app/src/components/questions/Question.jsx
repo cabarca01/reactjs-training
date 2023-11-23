@@ -9,7 +9,7 @@ import Summary from "../UI/Summary.jsx";
 export default function Question() {
   const context = useContext(QuizContext);
 
-  const questionTime = 10000;
+  const questionTime = 20000;
   const isQuizCompleted = context.availableQuestions.length === 0;
   const shuffledAnswerList = useRef();
 
@@ -37,7 +37,7 @@ export default function Question() {
     [context.onUpdateAnswerState, context.onRegisterAnswer]
   );
 
-  if (isQuizCompleted) {
+  if (isQuizCompleted && context.answerState === null) {
     return <Summary />;
   }
 
