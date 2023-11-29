@@ -13,9 +13,15 @@ class UserFinder extends React.Component {
   constructor() {
     super();
     this.state = {
-      filteredUsers: DUMMY_USERS,
+      filteredUsers: [],
       searchTerm: "",
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      filteredUsers: DUMMY_USERS,
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
