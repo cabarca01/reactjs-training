@@ -10,8 +10,12 @@ export default function Login() {
     console.log("password: " + pwdRef.current.value );
   }
 
+  function handleReset() {
+    document.getElementById("loginForm").reset();
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form id="loginForm" onSubmit={handleSubmit}>
       <h2>Login</h2>
 
       <div className="control-row">
@@ -27,7 +31,7 @@ export default function Login() {
       </div>
 
       <p className="form-actions">
-        <button className="button button-flat">Reset</button>
+        <button type="button" className="button button-flat"  onClick={handleReset}>Reset</button>
         <button className="button">Login</button>
       </p>
     </form>
