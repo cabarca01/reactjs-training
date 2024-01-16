@@ -11,6 +11,13 @@ export default function Login() {
     console.log(enteredData);
   }
 
+  function handleReset() {
+    setEnteredData({
+      email: "",
+      password: "",
+    });
+  }
+
   function dataChangeHandler(identifier, value) {
     setEnteredData((prevData) => ({
       ...prevData,
@@ -49,7 +56,7 @@ export default function Login() {
       </div>
 
       <p className="form-actions">
-        <button className="button button-flat">Reset</button>
+        <button className="button button-flat" onClick={handleReset}>Reset</button>
         <button className="button">Login</button>
       </p>
     </form>
