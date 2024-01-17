@@ -1,30 +1,40 @@
 import { useInput } from "./../hooks/useInput.js";
 
-import { isNotEmpty, hasMinLength } from "../util/validation";
+import { isNotEmpty, hasMinLength, isEmail } from "../util/validation";
 
 import Input from "./Input";
+
+function isEmailValid(data) {
+  return isNotEmpty(data) && isEmail(data);
+}
+
+function isPasswordValid(data) {
+  return isNotEmpty(data) && hasMinLength(data, 6);
+}
 
 export default function Login() {
   const {
     enteredData: emailData,
-    isEditData: emailEdit,
+    isDataValid: emailValidation,
     dataChangeHandler: emailDataHandler,
     inputBlurHandler: emailBlurHandler,
-    inputResetHandler: emailReset
-  } = useInput("");
+    inputResetHandler: emailReset,
+  } = useInput("", isEmailValid);
 
   const {
     enteredData: passwordData,
-    isEditData: passwordEdit,
+    isDataValid: passwordValidation,
     dataChangeHandler: passwordDataHandler,
     inputBlurHandler: passwordBlurHandler,
-    inputResetHandler: passwordReset
-  } = useInput("");
+    inputResetHandler: passwordReset,
+  } = useInput("", isPasswordValid);
 
   function handleSubmit(event) {
     event.preventDefault();
+    if (!emailValidation || !passwordValidation) {
+      return;
+    }
     console.log("Sending HTML Form...");
-    handleReset();
   }
 
   function handleReset() {
@@ -45,11 +55,8 @@ export default function Login() {
           onChange={emailDataHandler}
           onBlur={emailBlurHandler}
           value={emailData}
-          error={
-            !emailEdit &&
-            !isNotEmpty(emailData) &&
-            "Please enter a valid email"
-          }
+          error={!emailValidation && "Please enter a valid email"}
+          required
         />
 
         <Input
@@ -60,17 +67,17 @@ export default function Login() {
           onChange={passwordDataHandler}
           onBlur={passwordBlurHandler}
           value={passwordData}
-          error={
-            !passwordEdit &&
-            (!isNotEmpty(passwordData) ||
-              !hasMinLength(passwordData, 6)) &&
-            "Please enter a valid password"
-          }
+          error={!passwordValidation && "Please enter a valid password"}
+          required
         />
       </div>
 
       <p className="form-actions">
-        <button type="button" className="button button-flat" onClick={handleReset}>
+        <button
+          type="button"
+          className="button button-flat"
+          onClick={handleReset}
+        >
           Reset
         </button>
         <button className="button">Login</button>
