@@ -2,6 +2,7 @@ import "./MealList.css";
 
 import { useState, useEffect } from "react";
 import MealItem from "./MealItem.jsx";
+
 import { getMealList } from "../../util/http.js";
 
 export default function MealList() {
@@ -16,7 +17,7 @@ export default function MealList() {
         const meals = await getMealList();
         setAvailableMeals(meals);
       } catch (error) {
-        setErrorFetchingMeals(error);
+        setErrorFetchingMeals(error.message);
       }
       setIsFetchingMeals(false);
     }
@@ -26,17 +27,20 @@ export default function MealList() {
   return (
     <section>
       <ul id="meals">
-        {availableMeals.map((data) => (
-          <li key={data.id}>
-            <MealItem
-              id={data.id}
-              name={data.name}
-              description={data.description}
-              price={parseFloat(data.price)}
-              image={data.image}
-            />
-          </li>
-        ))}
+        {isFetchingMeals && <h2>Fetching available meals...</h2>}
+        {errorFetchingMeals && <h2>{errorFetchingMeals}</h2>}
+        {!isFetchingMeals &&
+          availableMeals.map((data) => (
+            <li key={data.id}>
+              <MealItem
+                id={data.id}
+                name={data.name}
+                description={data.description}
+                price={parseFloat(data.price)}
+                image={data.image}
+              />
+            </li>
+          ))}
       </ul>
     </section>
   );
