@@ -9,29 +9,30 @@ export const CartContext = createContext({
 function shoppingCartReducer(cartState, action) {
   const updatedCartItems = [...cartState.items];
 
-  if (action.identifier == "ADD_ITEM") {
-    const { id, name, price } = action.payload.item;
-    const itemIndex = cartState.items.findIndex((item) => item.id === id);
+  if (action.identifier === "ADD_ITEM") {
+    const newItem = action.payload.item;
+    const itemIndex = cartState.items.findIndex((item) => item.id === newItem.id);
     if (itemIndex < 0) {
       updatedCartItems.push({
-        id,
-        name,
-        price,
+        ...newItem,
         quantity: 1,
       });
     } else {
-      updatedCartItems[itemIndex].quantity += 1;
+      const updatedItem = {...cartState.items[itemIndex]}
+      updatedItem.quantity += 1;
+      updatedCartItems[itemIndex] = updatedItem;
     }
-  } else {
+  } else if (action.identifier === "REMOVE_ITEM") {
     const id = action.payload.id;
     const itemIndex = cartState.items.findIndex((item) => item.id === id);
-    const updatedItem = { ...updatedCartItems[itemIndex] };
+    const updatedItem = { ...cartState.items[itemIndex] };
 
     updatedItem.quantity -= 1;
-    updatedItem.quantity <= 0
+    updatedItem.quantity > 0
       ? (updatedCartItems[itemIndex] = updatedItem)
       : updatedCartItems.splice(itemIndex, 1);
   }
+  
   return {
     items: updatedCartItems,
   };
@@ -48,9 +49,11 @@ export default function CartContextProvider({ children }) {
     shoppingCartDispatch({
       identifier: "ADD_ITEM",
       payload: {
-        id: itemId,
-        name,
-        price: parseFloat(price),
+        item: {
+          id: itemId,
+          name,
+          price: parseFloat(price),
+        },
       },
     });
   }
@@ -65,7 +68,7 @@ export default function CartContextProvider({ children }) {
   }
 
   const initialCartValue = {
-    items: currentShoppingCart,
+    items: currentShoppingCart.items,
     addItem: addItemHandler,
     removeItem: removeItemHandler,
   };
