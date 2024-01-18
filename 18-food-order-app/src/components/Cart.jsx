@@ -1,3 +1,5 @@
+import "./Cart.css";
+
 import { useContext } from "react";
 import { CartContext } from "../contexts/shopping-cart.jsx";
 
@@ -12,7 +14,7 @@ export default function Cart() {
   );
 
   return (
-    <div id="cart">
+    <div>
       <h2>Your Cart</h2>
       <div>
         <ul>
@@ -41,12 +43,12 @@ export default function Cart() {
             </li>
           ))}
         </ul>
+        <p className="cart-total">{formatter.format(cartTotal)}</p>
+        <p className="modal-actions">
+          <Button isTextOnly={true}>Close</Button>
+          <Button>Go to Checkout</Button>
+        </p>
       </div>
-      <div id="cart-total">{formatter.format(cartTotal)}</div>
-      <p>
-        <Button isTextOnly={true}>Close</Button>
-        <Button>Go to Checkout</Button>
-      </p>
     </div>
   );
 }
