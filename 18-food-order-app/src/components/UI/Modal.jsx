@@ -10,6 +10,8 @@ export default function Modal({ keyId, open, className = "", children }) {
   useEffect(() => {
     if (open) {
       modalRef.current.showModal();
+    } else {
+      modalRef.current.close();
     }
   }, [open]);
 
