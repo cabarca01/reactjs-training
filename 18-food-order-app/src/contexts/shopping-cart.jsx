@@ -4,21 +4,25 @@ export const CartContext = createContext({
   items: [],
   addItem: (item) => {},
   removeItem: (id) => {},
+  resetCart: () => {},
 });
 
 function shoppingCartReducer(cartState, action) {
-  const updatedCartItems = [...cartState.items];
+  const updatedCartItems =
+    action.identifier === "RESET_CART" ? [] : [...cartState.items];
 
   if (action.identifier === "ADD_ITEM") {
     const newItem = action.payload.item;
-    const itemIndex = cartState.items.findIndex((item) => item.id === newItem.id);
+    const itemIndex = cartState.items.findIndex(
+      (item) => item.id === newItem.id
+    );
     if (itemIndex < 0) {
       updatedCartItems.push({
         ...newItem,
         quantity: 1,
       });
     } else {
-      const updatedItem = {...cartState.items[itemIndex]}
+      const updatedItem = { ...cartState.items[itemIndex] };
       updatedItem.quantity += 1;
       updatedCartItems[itemIndex] = updatedItem;
     }
@@ -32,7 +36,7 @@ function shoppingCartReducer(cartState, action) {
       ? (updatedCartItems[itemIndex] = updatedItem)
       : updatedCartItems.splice(itemIndex, 1);
   }
-  
+
   return {
     items: updatedCartItems,
   };
@@ -67,10 +71,17 @@ export default function CartContextProvider({ children }) {
     });
   }
 
+  function resetCartHandler() {
+    shoppingCartDispatch({
+      identifier: "RESET_CART",
+    });
+  }
+
   const initialCartValue = {
     items: currentShoppingCart.items,
     addItem: addItemHandler,
     removeItem: removeItemHandler,
+    resetCart: resetCartHandler,
   };
 
   return (

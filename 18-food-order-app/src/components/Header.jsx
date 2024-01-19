@@ -8,14 +8,15 @@ import Button from "./UI/Button";
 
 import Cart from "./Cart";
 import { ShoppingJourneyContext } from "../contexts/shopping-journey";
+import Checkout from "./Checkout";
 
 export default function Header() {
   const { items } = useContext(CartContext);
-  const { openCart } = useContext(ShoppingJourneyContext);
+  const { step, openCart } = useContext(ShoppingJourneyContext);
 
   return (
     <>
-      <Cart />
+      {step === "checkout" ? <Checkout /> : <Cart />}
 
       <header id="main-header">
         <div id="title">

@@ -2,7 +2,7 @@ import "./Cart.css";
 
 import { useContext } from "react";
 
-import { formatter } from "../util/utils.js";
+import { formatter, getTotal } from "../util/utils.js";
 
 import Button from "./UI/Button.jsx";
 import Modal from "./UI/Modal.jsx";
@@ -12,10 +12,7 @@ import { CartContext } from "../contexts/shopping-cart.jsx";
 export default function Cart() {
   const { step, openCheckout, closeCart } = useContext(ShoppingJourneyContext);
   const { items, addItem, removeItem } = useContext(CartContext);
-  const cartTotal = items.reduce(
-    (total, item) => (total += item.price * item.quantity),
-    0
-  );
+  const cartTotal = getTotal(items);
 
   return (
     <Modal keyId="cartModal" open={step === "cart"} className="cart">
@@ -53,7 +50,9 @@ export default function Cart() {
             <Button isTextOnly={true} type="button" onClick={closeCart}>
               Close
             </Button>
-            <Button type="button" onClick={openCheckout}>Go to Checkout</Button>
+            <Button type="button" onClick={openCheckout}>
+              Go to Checkout
+            </Button>
           </p>
         </div>
       </div>
