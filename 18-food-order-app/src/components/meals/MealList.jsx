@@ -1,36 +1,19 @@
 import "./MealList.css";
 
-import { useState, useEffect } from "react";
 import MealItem from "./MealItem.jsx";
+import useHttp from "../../hooks/useHttp.js";
 
-import { getMealList } from "../../util/http.js";
 
 export default function MealList() {
-  const [availableMeals, setAvailableMeals] = useState([]);
-  const [isFetchingMeals, setIsFetchingMeals] = useState(false);
-  const [errorFetchingMeals, setErrorFetchingMeals] = useState();
-
-  useEffect(() => {
-    async function getMeals() {
-      setIsFetchingMeals(true);
-      try {
-        const meals = await getMealList();
-        setAvailableMeals(meals);
-      } catch (error) {
-        setErrorFetchingMeals(error.message);
-      }
-      setIsFetchingMeals(false);
-    }
-    getMeals();
-  }, []);
+  const {isFetching, response, error} = useHttp("http://localhost:3000/meals");
 
   return (
     <section>
       <ul id="meals">
-        {isFetchingMeals && <h2>Fetching available meals...</h2>}
-        {errorFetchingMeals && <h2>{errorFetchingMeals}</h2>}
-        {!isFetchingMeals &&
-          availableMeals.map((data) => (
+        {isFetching && <h2>Fetching available meals...</h2>}
+        {error && <h2>{error}</h2>}
+        {!isFetching && response &&
+          response.map((data) => (
             <li key={data.id}>
               <MealItem
                 id={data.id}
