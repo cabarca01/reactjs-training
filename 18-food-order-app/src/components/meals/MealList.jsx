@@ -2,6 +2,7 @@ import "./MealList.css";
 
 import MealItem from "./MealItem.jsx";
 import useHttp from "../../hooks/useHttp.js";
+import Error from "../UI/Error.jsx";
 
 
 export default function MealList() {
@@ -11,7 +12,7 @@ export default function MealList() {
     <section>
       <ul id="meals">
         {isFetching && <h2>Fetching available meals...</h2>}
-        {error && <h2>{error}</h2>}
+        {!isFetching && error && <Error title="Failed to fetch items" message={error} />}
         {!isFetching && response &&
           response.map((data) => (
             <li key={data.id}>
