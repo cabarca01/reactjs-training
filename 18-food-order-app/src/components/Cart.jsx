@@ -50,9 +50,11 @@ export default function Cart() {
             <Button isTextOnly={true} type="button" onClick={closeModal}>
               Close
             </Button>
-            <Button type="button" onClick={openCheckout}>
-              Go to Checkout
-            </Button>
+            {items.length > 0 && (
+              <Button type="button" onClick={openCheckout}>
+                Go to Checkout
+              </Button>
+            )}
           </p>
         </div>
       </div>
