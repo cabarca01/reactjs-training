@@ -1,6 +1,7 @@
 import "./Checkout.css";
 
 import { useContext } from "react";
+import useHttp from "../hooks/useHttp";
 
 import { isEmail, isNotEmpty } from "../util/validations";
 
@@ -11,10 +12,22 @@ import { formatter, getTotal } from "../util/utils";
 import useInput from "../hooks/useInput";
 import Input from "./UI/Input";
 import Button from "./UI/Button";
+import Error from "./UI/Error";
+
+const httpConfig = {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
 
 export default function Checkout() {
   const { items, resetCart } = useContext(CartContext);
-  const { step, closeCheckout, closeCart } = useContext(ShoppingJourneyContext);
+  const { step, closeCheckout } = useContext(ShoppingJourneyContext);
+  const { response, error, isFetching, sendRequest } = useHttp(
+    "http://localhost:3000/orders",
+    httpConfig
+  );
 
   const cartTotal = getTotal(items);
 
@@ -68,10 +81,21 @@ export default function Checkout() {
     return isNotEmpty(value);
   });
 
-  function formSumbitHandler(event) {
+  async function formSubmitHandler(event) {
     event.preventDefault();
-    resetCart();
-    closeCart();
+    const reqBody = {
+      order: {
+        customer: {
+          name: nameValue,
+          email: emailValue,
+          street: addressValue,
+          "postal-code": plzValue,
+          city: cityValue,
+        },
+        items,
+      },
+    };
+    sendRequest(JSON.stringify(reqBody));
   }
 
   function formResetHandler() {
@@ -80,45 +104,84 @@ export default function Checkout() {
     addressResetHandler();
     plzResetHandler();
     cityResetHandler();
+    closeCheckout();
+  }
+
+  function finishCheckout() {
+    resetCart();
+    formResetHandler();
+  }
+
+  const formActions = isFetching ? (
+    <span>Placing order...</span>
+  ) : (
+    <>
+      <Button isTextOnly={true} type="reset">
+        Close
+      </Button>
+      <Button type="submit">Submit Order</Button>
+    </>
+  );
+
+  if (response && !error ) {
+    return (
+      <Modal
+        keyId="resultModal"
+        open={step === "checkout"}
+        onClose={finishCheckout}
+      >
+        <h2>Order received successfuly!</h2>
+        <p>
+          Your order has been placed and will arrive at the specified address
+          soon.
+        </p>
+        <p>Please check your email for more details</p>
+        <p className="modal-actions">
+          <Button type="button" onClick={finishCheckout}>
+            Close
+          </Button>
+        </p>
+      </Modal>
+    );
   }
 
   return (
     <Modal keyId="checkoutModal" open={step === "checkout"}>
       <h2>Checkout</h2>
       <p>Total amount: {formatter.format(cartTotal)}</p>
-      <form onSubmit={formSumbitHandler}>
-        
-          <Input
-            label="Full Name"
-            id="fullName"
-            type="text"
-            value={nameValue}
-            onChange={nameChangeHandler}
-            onBlur={nameBlurHandler}
-            error={!isNameValid && "Please enter your full name"}
-            required
-          />
-          <Input
-            label="E-Mail Address"
-            id="email"
-            type="email"
-            value={emailValue}
-            onChange={emailChangeHandler}
-            onBlur={emailBlurHandler}
-            error={!isEmailValid && "Please enter a valid E-Mail address"}
-            required
-          />
-          <Input
-            label="Street"
-            id="address"
-            type="text"
-            value={addressValue}
-            onChange={addressChangeHandler}
-            onBlur={addressBlurHandler}
-            error={!isAddressValid && "Please enter your street address"}
-            required
-          />
-        <p className="control-row">
+
+      <form onSubmit={formSubmitHandler} onReset={formResetHandler}>
+        <Input
+          label="Full Name"
+          id="fullName"
+          type="text"
+          value={nameValue}
+          onChange={nameChangeHandler}
+          onBlur={nameBlurHandler}
+          error={!isNameValid && "Please enter your full name"}
+          required
+        />
+        <Input
+          label="E-Mail Address"
+          id="email"
+          type="email"
+          value={emailValue}
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
+          error={!isEmailValid && "Please enter a valid E-Mail address"}
+          required
+        />
+        <Input
+          label="Street"
+          id="address"
+          type="text"
+          value={addressValue}
+          onChange={addressChangeHandler}
+          onBlur={addressBlurHandler}
+          error={!isAddressValid && "Please enter your street address"}
+          required
+        />
+        <div className="control-row">
           <Input
             label="Postal Code"
             id="plz"
@@ -139,13 +202,9 @@ export default function Checkout() {
             error={!isCityValid && "Please enter your city"}
             required
           />
-        </p>
-        <p className="modal-actions">
-          <Button isTextOnly={true} type="button" onClick={closeCheckout}>
-            Close
-          </Button>
-          <Button type="submit">Submit Order</Button>
-        </p>
+        </div>
+        {error && <Error title="Error posting order" message={error} />}
+        {!error && <p className="modal-actions">{formActions}</p>}
       </form>
     </Modal>
   );

@@ -6,7 +6,7 @@ export default function Input({ id, label, error, ...inputProps }) {
       <label htmlFor={id}>{label}</label>
       <input id={id} {...inputProps} />
 
-      {error && <p className="control-error">{error}</p>}
+      {error && <span className="control-error">{error}</span>}
     </p>
   );
 }

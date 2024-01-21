@@ -13,7 +13,7 @@ export default function Modal({ keyId, open, className = "", children }) {
     } else {
       modalRef.current.close();
     }
-  }, [open]);
+  }, [open, keyId]);
 
   return createPortal(
     <dialog ref={modalRef} className={cssClasses}>

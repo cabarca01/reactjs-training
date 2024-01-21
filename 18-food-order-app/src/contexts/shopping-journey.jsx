@@ -24,7 +24,7 @@ export default function ShoppingJourneyContextProvider({ children }) {
   }
 
   function closeCheckoutHandler() {
-    setShoppingJourneyStep("cart");
+    setShoppingJourneyStep("");
   }
 
   const initialContextValue = {
