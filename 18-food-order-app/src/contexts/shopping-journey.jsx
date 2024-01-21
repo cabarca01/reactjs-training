@@ -3,9 +3,8 @@ import { createContext, useState } from "react";
 export const ShoppingJourneyContext = createContext({
   step: "",
   openCart: () => {},
-  closeCart: () => {},
   openCheckout: () => {},
-  closeCheckout: () => {},
+  closeModal: () => {},
 });
 
 export default function ShoppingJourneyContextProvider({ children }) {
@@ -15,7 +14,7 @@ export default function ShoppingJourneyContextProvider({ children }) {
     setShoppingJourneyStep("cart");
   }
 
-  function closeCartHandler() {
+  function closeModalHandler() {
     setShoppingJourneyStep("");
   }
 
@@ -23,16 +22,11 @@ export default function ShoppingJourneyContextProvider({ children }) {
     setShoppingJourneyStep("checkout");
   }
 
-  function closeCheckoutHandler() {
-    setShoppingJourneyStep("");
-  }
-
   const initialContextValue = {
     step: shoppingJourneyStep,
     openCart: openCartHandler,
-    closeCart: closeCartHandler,
     openCheckout: openCheckoutHandler,
-    closeCheckout: closeCheckoutHandler,
+    closeModal: closeModalHandler
   };
 
   return (

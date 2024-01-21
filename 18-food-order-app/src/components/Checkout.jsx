@@ -23,7 +23,7 @@ const httpConfig = {
 
 export default function Checkout() {
   const { items, resetCart } = useContext(CartContext);
-  const { step, closeCheckout } = useContext(ShoppingJourneyContext);
+  const { step, closeModal } = useContext(ShoppingJourneyContext);
   const { response, error, isFetching, sendRequest } = useHttp(
     "http://localhost:3000/orders",
     httpConfig
@@ -104,7 +104,7 @@ export default function Checkout() {
     addressResetHandler();
     plzResetHandler();
     cityResetHandler();
-    closeCheckout();
+    closeModal();
   }
 
   function finishCheckout() {
