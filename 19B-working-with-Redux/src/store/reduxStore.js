@@ -1,16 +1,26 @@
 import { createStore } from "redux";
 
-function counterReducer(currState = { counter: 0 }, action) {
-  let newStateValue = currState.counter;
+const initialState = {
+  counter: 0,
+  showCounter: true,
+};
+
+function counterReducer(currState = initialState, action) {
+  let newCounter = currState.counter;
+  let newShowCounter = currState.showCounter;
+  
   if (action.type === "increment") {
-    newStateValue += 1;
+    newCounter += 1;
   } else if (action.type === "decrement") {
-    newStateValue -= 1;
+    newCounter -= 1;
   } else if (action.type === "increaseBy") {
-    newStateValue += action.step
-  } 
+    newCounter += action.step;
+  } else if (action.type === "toggleVisibility") {
+    newShowCounter = !currState.showCounter;
+  }
   return {
-    counter: newStateValue,
+    counter: newCounter,
+    showCounter: newShowCounter,
   };
 }
 
