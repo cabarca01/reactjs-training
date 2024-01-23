@@ -6,7 +6,9 @@ function counterReducer(currState = { counter: 0 }, action) {
     newStateValue += 1;
   } else if (action.type === "decrement") {
     newStateValue -= 1;
-  }
+  } else if (action.type === "increaseBy") {
+    newStateValue += action.step
+  } 
   return {
     counter: newStateValue,
   };
