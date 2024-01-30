@@ -34,7 +34,7 @@ const cartSlice = createSlice({
       state.isCartChanged = true;
     },
     replaceCart: (state, action) => {
-      state.items = action.payload;
+      state.items = action.payload || [];
       state.isCartChanged = false;
     },
   },
