@@ -7,6 +7,8 @@ const initialCartState = {
   isVisible: false,
 };
 
+const updateCartURL = "https://react-learning-2024-default-rtdb.europe-west1.firebasedatabase.app/cart.json";
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: initialCartState,
@@ -47,7 +49,7 @@ export function sendCartData(cart) {
 
     const saveCart = async () => {
       const response = await fetch(
-        "https://react-learning-2024-default-rtdb.europe-west1.firebasedatabase.app/cart.json",
+        updateCartURL,
         {
           method: "PUT",
           headers: {
