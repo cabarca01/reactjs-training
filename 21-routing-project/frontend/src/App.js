@@ -36,7 +36,7 @@ function App() {
         { path: "", element: <Home /> },
         { path: "events", element: <Events /> },
         { path: "events/new", element: <EventForm /> },
-        { path: "events/:eventId/edit", element: <EventForm /> },
+        { path: "events/:eventId/edit", element: <EventForm /> },  
         { path: "events/:eventId", element: <EventDetails />}
       ],
     },

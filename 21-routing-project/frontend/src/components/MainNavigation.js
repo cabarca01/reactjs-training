@@ -1,15 +1,17 @@
 import classes from './MainNavigation.module.css';
 
+import { Link } from 'react-router-dom';
+
 function MainNavigation() {
   return (
     <header className={classes.header}>
       <nav>
         <ul className={classes.list}>
           <li>
-            <a>Home</a>
+           <Link to="">Home</Link>
           </li>
           <li>
-            <a>Events</a>
+            <Link to="events">Events</Link>
           </li>
         </ul>
       </nav>
