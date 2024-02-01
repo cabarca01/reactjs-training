@@ -26,6 +26,7 @@ import Home from "./pages/Home";
 import Events from "./pages/Events";
 import EventForm from "./pages/EventForm";
 import EventDetails from "./pages/EventDetails";
+import EventLayout from "./pages/EventLayout";
 
 function App() {
   const router = createBrowserRouter([
@@ -34,10 +35,16 @@ function App() {
       element: <RootLayout />,
       children: [
         { path: "", element: <Home /> },
-        { path: "events", element: <Events /> },
-        { path: "events/new", element: <EventForm /> },
-        { path: "events/:eventId/edit", element: <EventForm /> },  
-        { path: "events/:eventId", element: <EventDetails />}
+        {
+          path: "events",
+          element: <EventLayout />,
+          children: [
+            { path: "", element: <Events /> },
+            { path: "new", element: <EventForm /> },
+            { path: ":eventId/edit", element: <EventForm /> },
+            { path: ":eventId", element: <EventDetails /> },
+          ],
+        },
       ],
     },
   ]);
