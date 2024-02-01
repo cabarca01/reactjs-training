@@ -21,7 +21,7 @@
 // BONUS: Add another (nested) layout route that adds the <EventNavigation> component above all /events... page components
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Root from "./pages/Root";
+import RootLayout from "./pages/RootLayout";
 import Home from "./pages/Home";
 import Events from "./pages/Events";
 import EventForm from "./pages/EventForm";
@@ -31,7 +31,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Root />,
+      element: <RootLayout />,
       children: [
         { path: "", element: <Home /> },
         { path: "events", element: <Events /> },
