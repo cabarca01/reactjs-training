@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RootLayout from "./pages/RootLayout";
 import Home from "./pages/Home";
-import Events from "./pages/Events";
+import Events, {eventsLoader} from "./pages/Events";
 import EventForm from "./pages/EventForm";
 import EventDetails from "./pages/EventDetails";
 import EventLayout from "./pages/EventLayout";
@@ -21,11 +21,7 @@ function App() {
             {
               path: "",
               element: <Events />,
-              loader: async () => {
-                const response = await fetch("http://localhost:8080/events");
-                const resData = await response.json();
-                return resData.events;
-              },
+              loader: eventsLoader
             },
             { path: "new", element: <EventForm /> },
             { path: ":eventId/edit", element: <EventForm /> },
