@@ -26,11 +26,17 @@ function App() {
               loader: eventsLoader,
             },
             { path: "new", element: <EventForm /> },
-            { path: ":eventId/edit", element: <EventForm /> },
             {
               path: ":eventId",
-              element: <EventDetails />,
+              id: "event-detail",
               loader: eventDetailLoader,
+              children: [
+                {
+                  path: "",
+                  element: <EventDetails />,
+                },
+                { path: "edit", element: <EventForm /> },
+              ],
             },
           ],
         },
