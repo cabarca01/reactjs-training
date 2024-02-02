@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/RootLayout";
 import Home from "./pages/Home";
 import Events, { eventsLoader } from "./pages/Events";
-import EventForm from "./pages/EventForm";
+import EventForm, { eventFormPostAction } from "./pages/EventForm";
 import EventDetails, { eventDetailLoader } from "./pages/EventDetails";
 import EventLayout from "./pages/EventLayout";
 import Error from "./pages/Error";
@@ -25,7 +25,11 @@ function App() {
               element: <Events />,
               loader: eventsLoader,
             },
-            { path: "new", element: <EventForm /> },
+            {
+              path: "new",
+              element: <EventForm />,
+              action: eventFormPostAction,
+            },
             {
               path: ":eventId",
               id: "event-detail",
