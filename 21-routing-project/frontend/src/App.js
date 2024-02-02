@@ -18,7 +18,15 @@ function App() {
           path: "events",
           element: <EventLayout />,
           children: [
-            { path: "", element: <Events /> },
+            {
+              path: "",
+              element: <Events />,
+              loader: async () => {
+                const response = await fetch("http://localhost:8080/events");
+                const resData = await response.json();
+                return resData.events;
+              },
+            },
             { path: "new", element: <EventForm /> },
             { path: ":eventId/edit", element: <EventForm /> },
             { path: ":eventId", element: <EventDetails /> },
