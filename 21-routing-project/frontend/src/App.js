@@ -15,13 +15,13 @@ function App() {
       element: <RootLayout />,
       errorElement: <Error />,
       children: [
-        { path: "", element: <Home /> },
+        { index: true, element: <Home /> },
         {
           path: "events",
           element: <EventLayout />,
           children: [
             {
-              path: "",
+              index: true,
               element: <Events />,
               loader: eventsLoader,
             },
@@ -32,7 +32,7 @@ function App() {
               loader: eventDetailLoader,
               children: [
                 {
-                  path: "",
+                  index: true,
                   element: <EventDetails />,
                 },
                 { path: "edit", element: <EventForm /> },
