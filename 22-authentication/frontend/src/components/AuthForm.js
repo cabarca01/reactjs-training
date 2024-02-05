@@ -1,15 +1,25 @@
-import { Form, Link, useSearchParams } from "react-router-dom";
+import { Form, Link, useActionData, useSearchParams } from "react-router-dom";
 
 import classes from "./AuthForm.module.css";
 
 function AuthForm() {
   const [params] = useSearchParams();
   const isLogin = params.get("mode") === "login";
+  const actionData = useActionData();
 
   return (
     <>
       <Form method="post" className={classes.form}>
         <h1>{isLogin ? "Log in" : "Create a new user"}</h1>
+
+        {actionData && actionData.errors && (
+          <ul>
+            {Object.values(actionData.errors).map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+          </ul>
+        )}
+
         <p>
           <label htmlFor="email">Email</label>
           <input id="email" type="email" name="email" required />
