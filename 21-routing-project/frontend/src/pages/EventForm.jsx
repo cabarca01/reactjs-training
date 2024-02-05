@@ -1,7 +1,7 @@
 import { json, redirect, useRouteLoaderData } from "react-router-dom";
 import EventFormComponent from "../components/EventForm";
 
-export async function eventFormPostAction({ request, params }) {
+export async function eventFormSaveAction({ request, params }) {
   const data = await request.formData();
   const event = {
     title: data.get("title"),
@@ -9,12 +9,19 @@ export async function eventFormPostAction({ request, params }) {
     date: data.get("date"),
     description: data.get("description"),
   };
+
+  const method = request.method;
+  const url =
+    method === "POST"
+      ? "http://localhost:8080/events"
+      : `http://localhost:8080/events/${params.eventId}`;
+
   let response;
   let responseBody;
-
+  
   try {
-    response = await fetch("http://localhost:8080/events", {
-      method: "POST",
+    response = await fetch(url, {
+      method,
       headers: {
         "Content-Type": "application/json",
       },
@@ -48,5 +55,5 @@ export async function eventFormPostAction({ request, params }) {
 
 export default function EventForm() {
   const event = useRouteLoaderData("event-detail");
-  return <EventFormComponent event={event} method={event ? "patch" : "post"} />;
+  return <EventFormComponent event={event} method={event ? "PATCH" : "POST"} />;
 }

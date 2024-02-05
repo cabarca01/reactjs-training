@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/RootLayout";
 import Home from "./pages/Home";
 import Events, { eventsLoader } from "./pages/Events";
-import EventForm, { eventFormPostAction } from "./pages/EventForm";
+import EventForm, { eventFormSaveAction } from "./pages/EventForm";
 import EventDetails, {
   eventDeleteAction,
   eventDetailLoader,
@@ -31,7 +31,7 @@ function App() {
             {
               path: "new",
               element: <EventForm />,
-              action: eventFormPostAction,
+              action: eventFormSaveAction,
             },
             {
               path: ":eventId",
@@ -43,7 +43,11 @@ function App() {
                   element: <EventDetails />,
                   action: eventDeleteAction,
                 },
-                { path: "edit", element: <EventForm /> },
+                {
+                  path: "edit",
+                  element: <EventForm />,
+                  action: eventFormSaveAction,
+                },
               ],
             },
           ],
