@@ -1,10 +1,16 @@
-import { useNavigate, Form, useNavigation } from "react-router-dom";
+import {
+  useNavigate,
+  Form,
+  useNavigation,
+  useActionData,
+} from "react-router-dom";
 
 import classes from "./EventForm.module.css";
 
 function EventForm({ method, event }) {
   const navigate = useNavigate();
   const navigation = useNavigation();
+  const serverData = useActionData();
 
   const isSubmitting = navigation.state === "submitting";
 
@@ -20,9 +26,12 @@ function EventForm({ method, event }) {
           id="title"
           type="text"
           name="title"
-          required
+          
           defaultValue={event ? event.title : ""}
         />
+        {serverData && serverData.errors.title && (
+          <span>{serverData.errors.title}</span>
+        )}
       </p>
       <p>
         <label htmlFor="image">Image</label>
@@ -33,6 +42,9 @@ function EventForm({ method, event }) {
           required
           defaultValue={event ? event.image : ""}
         />
+        {serverData && serverData.errors.image && (
+          <span>{serverData.errors.image}</span>
+        )}
       </p>
       <p>
         <label htmlFor="date">Date</label>
@@ -43,6 +55,9 @@ function EventForm({ method, event }) {
           required
           defaultValue={event ? event.date : ""}
         />
+        {serverData && serverData.errors.date && (
+          <span>{serverData.errors.date}</span>
+        )}
       </p>
       <p>
         <label htmlFor="description">Description</label>
@@ -53,13 +68,16 @@ function EventForm({ method, event }) {
           required
           defaultValue={event ? event.description : ""}
         />
+        {serverData && serverData.errors.description && (
+          <span>{serverData.errors.description}</span>
+        )}
       </p>
       <div className={classes.actions}>
         <button type="button" onClick={cancelHandler} disabled={isSubmitting}>
           Cancel
         </button>
         <button disabled={isSubmitting}>
-          {isSubmitting ? "Submittting..." : "Save"}
+          {isSubmitting ? "Submitting..." : "Save"}
         </button>
       </div>
     </Form>

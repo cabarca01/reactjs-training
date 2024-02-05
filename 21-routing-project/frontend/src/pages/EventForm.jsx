@@ -29,12 +29,20 @@ export async function eventFormPostAction({ request, params }) {
     );
   }
 
+  if (response.status === 422) {
+    return new Response(JSON.stringify(responseBody), {
+      status: response.status,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   if (!response.ok) {
     throw json(
       { message: responseBody.message || "Could not save event" },
       { status: response.status }
     );
   }
+
   return redirect("..");
 }
 
