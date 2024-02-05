@@ -10,6 +10,7 @@ import EventDetails, {
 } from "./pages/EventDetails";
 import EventLayout from "./pages/EventLayout";
 import Error from "./pages/Error";
+import Newsletter, { newsLetterSignupAction } from "./pages/Newsletter";
 
 function App() {
   const router = createBrowserRouter([
@@ -51,6 +52,11 @@ function App() {
               ],
             },
           ],
+        },
+        {
+          path: 'newsletter',
+          element: <Newsletter />,
+          action: newsLetterSignupAction,
         },
       ],
     },
