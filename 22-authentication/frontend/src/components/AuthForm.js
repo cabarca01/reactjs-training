@@ -1,4 +1,10 @@
-import { Form, Link, useActionData, useSearchParams } from "react-router-dom";
+import {
+  Form,
+  Link,
+  useActionData,
+  useNavigation,
+  useSearchParams,
+} from "react-router-dom";
 
 import classes from "./AuthForm.module.css";
 
@@ -6,6 +12,7 @@ function AuthForm() {
   const [params] = useSearchParams();
   const isLogin = params.get("mode") === "login";
   const actionData = useActionData();
+  const navigation = useNavigation();
 
   return (
     <>
@@ -32,7 +39,9 @@ function AuthForm() {
           <Link to={`?mode=${isLogin ? "signup" : "login"}`}>
             {isLogin ? "Create new user" : "Login"}
           </Link>
-          <button>Save</button>
+          <button disabled={navigation.state === "submitting"}>
+            {navigation.state === "submitting" ? "Submitting..." : "Save"}
+          </button>
         </div>
       </Form>
     </>
