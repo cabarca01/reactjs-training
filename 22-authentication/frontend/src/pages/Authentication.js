@@ -13,7 +13,7 @@ export async function authenticateAction({ request }) {
   const mode = params.get("mode");
 
   const actionUrl =
-     mode === "login"
+    mode === "login"
       ? "http://localhost:8080/login"
       : "http://localhost:8080/signup";
 
@@ -53,7 +53,10 @@ export async function authenticateAction({ request }) {
   }
 
   const token = responseBody.token;
-  localStorage.setItem("token", token);
+  const now = new Date();
 
+  localStorage.setItem("token", token);
+  localStorage.setItem("tokenExpiration", now.setHours(now.getHours() + 1));
+  
   return redirect("/");
 }
