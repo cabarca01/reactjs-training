@@ -27,6 +27,8 @@ function AuthForm() {
           </ul>
         )}
 
+        {actionData && actionData.message && <p>{actionData.message}</p>}
+
         <p>
           <label htmlFor="email">Email</label>
           <input id="email" type="email" name="email" required />

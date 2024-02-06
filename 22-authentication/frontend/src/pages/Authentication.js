@@ -7,7 +7,7 @@ function AuthenticationPage() {
 
 export default AuthenticationPage;
 
-export async function signupAction({ request }) {
+export async function authenticateAction({ request }) {
   const data = await request.formData();
   const params = new URL(request.url).searchParams;
   const mode = params.get("mode");
@@ -52,5 +52,8 @@ export async function signupAction({ request }) {
     );
   }
 
-  return redirect(mode === "login" ? "/" : "/auth?mode=login");
+  const token = responseBody.token;
+  localStorage.setItem("token", token);
+
+  return redirect("/");
 }
