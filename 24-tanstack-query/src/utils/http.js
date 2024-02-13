@@ -42,6 +42,25 @@ export async function createEvent(eventData) {
   return event;
 }
 
+export async function updateEvent({ id, event }) {
+  const response = await fetch(`http://localhost:3000/events/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ event }),
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while saving the edited event");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const responseBody = await response.json();
+
+  return responseBody;
+}
+
 export async function fetchEventImages({ signal }) {
   const response = await fetch("http://localhost:3000/events/images", {
     signal: signal,

@@ -1,20 +1,67 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-import Modal from '../UI/Modal.jsx';
-import EventForm from './EventForm.jsx';
+import {
+  fetchSingleEvent,
+  queryClient,
+  updateEvent,
+} from "../../utils/http.js";
+import Modal from "../UI/Modal.jsx";
+import EventForm from "./EventForm.jsx";
+import ErrorBlock from "../UI/ErrorBlock.jsx";
+import LoadingIndicator from "../UI/LoadingIndicator.jsx";
 
 export default function EditEvent() {
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  function handleSubmit(formData) {}
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["events", { eventId: id }],
+    queryFn: ({ signal }) => fetchSingleEvent({ signal, id }),
+  });
 
-  function handleClose() {
-    navigate('../');
+  const { mutate } = useMutation({
+    mutationFn: updateEvent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+      navigate("/events/" + id);
+    },
+  });
+
+  function handleSubmit(formData) {
+    mutate({ id, event: formData });
   }
 
-  return (
-    <Modal onClose={handleClose}>
-      <EventForm inputData={null} onSubmit={handleSubmit}>
+  function handleClose() {
+    navigate("../");
+  }
+
+  let content;
+  if (isPending) {
+    content = (
+      <div className="center">
+        <LoadingIndicator />
+      </div>
+    );
+  }
+
+  if (isError) {
+    content = (
+      <>
+        <ErrorBlock
+          title="Failed to fetch event"
+          message={error.info?.message || "Failed to fetch event details"}
+        />
+        <div className="form-actions">
+          <Link to="../">Okay</Link>
+        </div>
+      </>
+    );
+  }
+
+  if (data) {
+    content = (
+      <EventForm inputData={data} onSubmit={handleSubmit}>
         <Link to="../" className="button-text">
           Cancel
         </Link>
@@ -22,6 +69,8 @@ export default function EditEvent() {
           Update
         </button>
       </EventForm>
-    </Modal>
-  );
+    );
+  }
+
+  return <Modal onClose={handleClose}>{content}</Modal>;
 }

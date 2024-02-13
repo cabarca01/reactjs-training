@@ -81,7 +81,11 @@ export default function EventDetails() {
           View all Events
         </Link>
       </Header>
-      {isPending && <p>Fetching event details...</p>}
+      {isPending && (
+        <div id="event-details-content" className="center">
+          <p>Fetching event details...</p>
+        </div>
+      )}
       {isError && (
         <ErrorBlock
           title="Failed to fetch event details"
