@@ -1,7 +1,6 @@
 export async function fetchEvents({ searchTerm, signal }) {
   let fetchUrl = "http://localhost:3000/events";
 
-  console.log(searchTerm);
   if (searchTerm && searchTerm != null) {
     fetchUrl += "?search=" + searchTerm;
   }
@@ -18,4 +17,23 @@ export async function fetchEvents({ searchTerm, signal }) {
   const { events } = await response.json();
 
   return events;
+}
+
+export async function createEvent(eventData) {
+  const response = await fetch("http://localhost:3000/events", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(eventData),
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while saving the new event");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const { event } = await response.json();
+
+  return event;
 }
