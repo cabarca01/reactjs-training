@@ -1,3 +1,7 @@
+import { QueryClient } from "@tanstack/react-query";
+
+export const queryClient = new QueryClient();
+
 export async function fetchEvents({ searchTerm, signal }) {
   let fetchUrl = "http://localhost:3000/events";
 
@@ -36,4 +40,22 @@ export async function createEvent(eventData) {
   const { event } = await response.json();
 
   return event;
+}
+
+export async function fetchEventImages({ signal }) {
+  const response = await fetch("http://localhost:3000/events/images", {
+    signal: signal,
+  });
+
+  if (!response.ok) {
+    const error = new Error(
+      "An error occurred while fetching the list of event images"
+    );
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const { images } = await response.json();
+  return images;
 }
